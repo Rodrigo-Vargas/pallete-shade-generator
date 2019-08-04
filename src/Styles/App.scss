@@ -9,17 +9,17 @@
     border-radius: .25rem;
     color: #495057;
     display: block;
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.5;
     margin-bottom: 5px;
-    // padding: .375rem .75rem;
+     padding: .375rem .375rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 100%;
 }
 
 .pallete {
     margin: 50px auto 20px;
-    width: 700px;
+    text-align: center;
 
     .colorHexDisplay {
         background-color: #f1f1f1;
@@ -30,13 +30,13 @@
 
     .square {
         display: inline-block;
-        height: 150px;
+        height: 200px;
         padding: 5px;
-        width: 100px;
+        width: 125px;
     }
 
     .form-control {
-        max-width: 30px
+        max-width: 60px
     }
 }
 

@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 
+import "../Styles/App.scss";
+
+import colorConveterStore from "../Actions/ColorConveterStore";
 import PalleteStore from "../Actions/PalleteStore";
 
-import "../Styles/App.scss";
-import colorConveterStore from "../Actions/ColorConveterStore";
+import BrightnessGraph from "./BrightnessGraph";
+import LightSaturationGraph from "./LightSaturationGraph";
+
 
 class App extends Component {
     constructor(props) {
@@ -12,12 +16,14 @@ class App extends Component {
 
         this.state = {
             color: "#35aceb",
-            pallete: []
+            pallete: [],
+            palleteSize: 3
         };
 
         this.onColorChange = this.onColorChange.bind(this);
         this.onGenerateButtonClick = this.onGenerateButtonClick.bind(this);
         this.onPalleteColorStatChange = this.onPalleteColorStatChange.bind(this);
+        this.onPalleteSizeChanged = this.onPalleteSizeChanged.bind(this);
     }
 
     onColorChange() {
@@ -73,8 +79,14 @@ class App extends Component {
         this.generatePallete();
     }
 
+    onPalleteSizeChanged() {
+        this.setState({
+            palleteSize: event.target.value
+        });
+    }
+
     generatePallete() {
-        let pallete = PalleteStore.generate(this.state.color, 7);
+        let pallete = PalleteStore.generate(this.state.color, this.state.palleteSize);
 
         this.setState({
             pallete: pallete
@@ -82,9 +94,8 @@ class App extends Component {
     }
 
     render() {
+        let boxStyle, paragraphStyle, titleStyle;
         let pallete = [];
-        let points = [];
-        let brightnessPoints = [];
 
         this.state.pallete.forEach((color, index) => {
             let colorStyle = { 
@@ -99,31 +110,20 @@ class App extends Component {
                                 <input type="number" className="form-control" value={color.hsl.lightness}  onChange={ (e) => this.onPalleteColorStatChange(color, "lightness", e) } />                                
                             </div>
             );
-
-            let pointStyle = {
-                backgroundColor: color.hex,
-                bottom: (color.hsl.saturation) * 2.71 - 11 + "px",
-                left: (color.hsl.lightness) * 2.71 - 11 + "px"
-            };
-
-            points.push(<div key={index} className="point" style={pointStyle}></div> )
-
-
-            let brightnessPointStyle = {
-                backgroundColor: color.hex,
-                bottom: (color.brightness * 100) * 2.71 - 11 + "px",
-                left: 50 + (index * 30) + "px"
-            };
-
-            brightnessPoints.push(<div key={index} className="point" 
-                                        style={brightnessPointStyle}
-                                        brightness={ color.brightness }>
-
-
-            </div>);
         });
 
-        let boxStyle, paragraphStyle, titleStyle;
+        let availablePalleteSizes = [3, 5, 7, 9];
+
+        let palleteSize = availablePalleteSizes.map((size, index) => {
+            return (
+                <div key={index}>
+                    <label htmlFor="">{ size }</label>
+                    <input type="radio" checked={this.state.palleteSize == size }
+                                        onChange={ this.onPalleteSizeChanged }
+                                        value={ size }/>
+                </div>
+            );
+        })
 
         if (this.state.pallete.length)
         {
@@ -134,27 +134,18 @@ class App extends Component {
     
             paragraphStyle = {
                 color: this.state.pallete[ Math.trunc(this.state.pallete.length / 2) ].hex
-            }
+            };
     
             titleStyle = {
                 color: this.state.pallete[0].hex
-            }
-        }
-
-        let tableRows = [];
-        
-        for(let i = 0; i < 9; i++)
-        {
-            let tableCells = [];
-
-            for(let i = 0; i < 9; i++)
-                tableCells.push(<td></td>);
-
-            tableRows.push(<tr>{ tableCells }</tr>);
+            };
         }
 
         return (<div>
+
+                    { palleteSize }
                     <input type="text" value={this.state.color} onChange={this.onColorChange}  />
+
                     <button onClick={this.onGenerateButtonClick}>Generate Pallete</button>
 
                     <div className="pallete">
@@ -170,28 +161,9 @@ class App extends Component {
                         </div>
                     </div>
 
-                    <div className="lightSaturationGraph">
-                        <table>
-                            <tbody>
-                                { tableRows }
-                            </tbody>
-                        </table>
-                        <div className="points">
-                            { points }
-                        </div>
-                    </div>
+                    <LightSaturationGraph pallete={ this.state.pallete }></LightSaturationGraph>
 
-                    <div className="brightnessGraph">
-                        <table>
-                            <tbody>
-                                { tableRows }
-                            </tbody>
-                        </table>
-
-                        <div className="points">
-                            { brightnessPoints }
-                        </div>
-                    </div>
+                    <BrightnessGraph pallete={ this.state.pallete }></BrightnessGraph>
                 </div> );
     }
 
