@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 
+import ColorConveterStore from "../Actions/ColorConveterStore";
+
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            color: "",
+            color: "#35aceb",
             pallete: []
         };
 
@@ -25,11 +27,22 @@ class App extends Component {
     }
 
     generatePallete() {
+        let hsl = ColorConveterStore.HexToHSL(this.state.color);
+
+        let lighterColor = hsl.hue;
+        let darkerColor = hsl;
+
+        lighterColor.hue -= 20;
+        darkerColor += 20;
+
+        let hexLighterColor = ColorConveterStore.HSLToHex(lighterColor.hue, lighterColor.saturation, lighterColor.lightness);
+        let hexDarkerColor = ColorConveterStore.HSLToHex(darkerColor.hue, darkerColor.saturation, darkerColor.lightness);
+
         this.setState({
             pallete: [
-                "#b9e2f8",
-                "#8bcff4",
-                "#5dbcef"
+                hexLighterColor,
+                this.state.color,
+                darkerColor
             ]
         });
     }
