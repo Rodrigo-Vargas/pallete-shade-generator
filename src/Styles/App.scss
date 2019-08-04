@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+}
+
+.form-control {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    color: #495057;
+    display: block;
+    font-size: 8px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+    // padding: .375rem .75rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    width: 100%;
+}
+
+.pallete {
+    margin: 50px auto 20px;
+    width: 700px;
+
+    .colorHexDisplay {
+        background-color: #f1f1f1;
+        color: #222;
+        display: block;
+        margin-bottom: 25px;
+    }
+
+    .square {
+        display: inline-block;
+        height: 150px;
+        padding: 5px;
+        width: 100px;
+    }
+
+    .form-control {
+        max-width: 30px
+    }
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    
+    td {
+        border-top: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        height: 30px;
+        width: 30px;
+
+        &:first-child {
+            border-left: 1px solid #ccc;
+        }
+    }
+}
+
+.testArea {
+    margin-bottom: 15px;
+    padding: 20px;
+}
+
+.lightSaturationGraph, .brightnessGraph {
+    display: inline-block;
+    margin-right: 15px;
+    position: relative;
+
+    .points {
+        width: 298px;
+        
+        .point {
+            border: 1px solid #aaa;
+            border-radius: 50%;
+            height: 20px;
+            position: absolute;
+            width: 20px;
+        }    
+    }
+}
